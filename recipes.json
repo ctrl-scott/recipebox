@@ -1,0 +1,65 @@
+[
+  {
+    "id": "no-knead-pot-bread",
+    "title": "No-Knead Pot Bread",
+    "time": "12–18 hr rest + 45 min bake",
+    "tags": ["bread", "dutch-oven", "beginner"],
+    "body": "A high-hydration, long-rest dough baked in a preheated heavy pot for steam and oven spring.",
+    "ingredients": [
+      "3 cups (360 g) all-purpose or bread flour",
+      "1/4 tsp instant yeast",
+      "1 1/4 tsp salt",
+      "1 1/2 cups (355 ml) cool water"
+    ],
+    "steps": [
+      "Whisk flour, yeast, and salt. Add water until a shaggy dough forms. Cover and rest 12–18 hours at room temp.",
+      "Turn dough onto floured surface, fold several times, rest 15 minutes. Shape into a ball; proof 1–2 hours.",
+      "Preheat oven to 450°F (232°C) with heavy pot inside (30 minutes).",
+      "Drop dough onto parchment, score, lower into hot pot, cover; bake 30 minutes. Uncover and bake 10–15 minutes more until deep golden."
+    ],
+    "source_citation": "Lahey, J., & Myhrvold, R. (2006, November 8). No-Knead Bread. The New York Times. (Technique popularization; adapt for home use.)",
+    "source_url": "https://cooking.nytimes.com/recipes/11376-no-knead-bread"
+  },
+  {
+    "id": "sheet-pan-paprika-chicken",
+    "title": "Sheet-Pan Paprika Chicken",
+    "time": "35–45 min",
+    "tags": ["chicken", "sheet-pan", "weeknight"],
+    "body": "Crispy paprika-garlic chicken thighs roasted with potatoes for a one-pan dinner.",
+    "ingredients": [
+      "4 bone-in, skin-on chicken thighs",
+      "1 lb small potatoes, halved",
+      "2 tbsp olive oil",
+      "2 tsp sweet paprika",
+      "1 tsp garlic powder",
+      "1 tsp kosher salt",
+      "1/2 tsp black pepper"
+    ],
+    "steps": [
+      "Heat oven to 425°F (218°C). Toss potatoes with half the oil and half the seasonings on a sheet pan.",
+      "Pat chicken dry; rub with remaining oil and seasonings. Place skin-side up on the pan.",
+      "Roast 30–40 minutes until potatoes are tender and chicken is 165°F (74°C) at thickest part; rest 5 minutes."
+    ],
+    "source_citation": "U.S. Department of Agriculture. (2020). Kitchen Companion: Your Safe Food Handbook. USDA. (For doneness temps.)",
+    "source_url": "https://www.fsis.usda.gov/food-safety"
+  },
+  {
+    "id": "sunny-lemon-bars",
+    "title": "Sunny Lemon Bars",
+    "time": "40–55 min",
+    "tags": ["dessert", "bake"],
+    "body": "A classic lemon custard baked over a shortbread crust, finished with powdered sugar.",
+    "ingredients": [
+      "Crust: 1 cup (120 g) flour, 1/4 cup (50 g) sugar, 1/2 cup (113 g) butter, pinch salt",
+      "Filling: 3/4 cup (150 g) sugar, 2 tbsp flour, 3 eggs, 1/2 cup lemon juice, zest 1 lemon"
+    ],
+    "steps": [
+      "Heat oven to 350°F (177°C). Line 8×8 pan with parchment.",
+      "Crust: mix dry, cut in butter to sandy crumbs; press into pan; bake 15 minutes.",
+      "Filling: whisk sugar, flour, eggs, juice, zest. Pour onto hot crust; bake 20–25 minutes until just set.",
+      "Cool fully; dust with powdered sugar; cut."
+    ],
+    "source_citation": "McGee, H. (2004). On Food and Cooking: The science and lore of the kitchen. Scribner. (For custard/curd principles.)",
+    "source_url": ""
+  }
+]

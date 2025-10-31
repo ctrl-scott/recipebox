@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Animated Recipe Box</title>
+  <style>
+    :root{
+      --bg:#ffffff; --ink:#111; --muted:#7a7a7a;
+      --box:#7cc7f3; --lid:#4da6ff; --card:#f7ebe0;
+      --accent:#0a66c2; --shadow:0 8px 24px rgba(0,0,0,.12);
+    }
+    html,body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;height:100%}
+    .app{display:grid;grid-template-columns:minmax(300px,620px) 1fr;gap:28px;padding:28px;max-width:1200px;margin:auto}
+    .stage{position:relative;min-height:520px;border-radius:20px;background:repeating-linear-gradient(0deg,#f6f6f6 0 28px,#fff 28px 56px);box-shadow:var(--shadow);overflow:hidden}
+    .floor{position:absolute;inset:auto 0 0 0;height:160px;background:radial-gradient(ellipse at center,#e9f4ff 0,#e1f0ff 40%,#ffffff 75%);}
+    /*.box{position:absolute;left:56px;bottom:90px;width:260px;height:160px;transform-style:preserve-3d;}*/
+	/* Recipe Box: warm woodgrain background */
+	.box {
+	  position: absolute;
+	  left: 56px;
+	  bottom: 90px;
+	  width: 260px;
+	  height: 160px;
+	  transform-style: preserve-3d;
+	  border-radius: 8px;
+	  box-shadow: 0 12px 24px rgba(0, 0, 0, .25);
+
+	  /* new background */
+	  background-color: #d2a679;
+	  background-image:
+	    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    repeating-linear-gradient(90deg, #c38b66 0 4px, #d2a679 4px 8px);
+	  background-size: 16px 16px, 16px 16px, 8px 8px;
+	  background-blend-mode: overlay;
+	}
+	
+	
+	
+    .box .body{position:absolute;inset:0;background:var(--box);border-radius:8px;box-shadow:0 12px 24px rgba(0,0,0,.2);  background-color: #d2a679;
+	  background-image:
+	    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    repeating-linear-gradient(90deg, #c38b66 0 4px, #d2a679 4px 8px);
+	  background-size: 16px 16px, 16px 16px, 8px 8px;
+	  background-blend-mode: overlay;}
+    .box .side{position:absolute;top:0;right:-20px;width:24px;height:100%;background:#82cff6;transform:skewY(-6deg);border-radius:0 8px 8px 0;  background-color: #EBA65B;
+	  background-image:
+	    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    repeating-linear-gradient(90deg, #c38b66 0 4px, #d2a679 4px 8px);
+	  background-size: 16px 16px, 16px 16px, 8px 8px;
+	  background-blend-mode: overlay;}
+	  
+    .box .lip{position:absolute;left:0;right:0;top:-18px;height:26px;background:#a0d6ff;border-radius:10px 10px 0 0; background-color: #d2a679;
+	  background-image:
+	    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    repeating-linear-gradient(90deg, #c38b66 0 4px, #d2a679 4px 8px);
+	  background-size: 16px 16px, 16px 16px, 8px 8px;
+	  background-blend-mode: overlay;}
+    .lid{position:absolute;left:0;right:-20px;top:-78px;height:70px;background:var(--lid);border-radius:10px 10px 0 0;transform-origin:10% 100%;transform:rotateX(0deg);box-shadow:0 10px 20px rgba(0,0,0,.18); background-color: #d2a679;
+	  background-image:
+	    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%),
+	    repeating-linear-gradient(90deg, #c38b66 0 4px, #d2a679 4px 8px);
+	  background-size: 16px 16px, 16px 16px, 8px 8px;
+	  background-blend-mode: overlay;}
+    .box.open .lid{animation:openLid .9s cubic-bezier(.2,.9,.24,1) forwards}
+    .box.close .lid{animation:closeLid .7s ease-in forwards}
+    @keyframes openLid{to{transform:rotateX(-120deg) translateY(-2px)}}
+    @keyframes closeLid{from{transform:rotateX(-120deg)} to{transform:rotateX(0deg)}}
+    /* Cards stack */
+    .cards{pointer-events:none;z-index:10;position:absolute;left:82px;bottom:160px;width:210px;height:280px}
+    .cards .card,.cards .card *{pointer-events:auto}
+    .card{position:absolute;inset:auto 0 0 0;margin:auto;width:210px;background:var(--card);border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.18);transform-origin:50% 100%;opacity:0}
+    .card::after{content:"";position:absolute;left:22px;bottom:-20px;width:0;height:0;border:12px solid transparent;border-top-color:var(--card);filter:drop-shadow(0 2px 2px rgba(0,0,0,.1))}
+    .card.enter{animation:popOut 5s forwards}
+    .card.exit{animation:slideBack .45s ease-in forwards}
+    .card.hold{animation-play-state:paused!important}
+    @keyframes popOut{
+      0%{transform:translateY(20px) scale(.92) rotate(-2deg);opacity:0}
+      60%{transform:translateY(-120px) scale(1.02) rotate(1deg);opacity:1}
+      80%{transform:translateY(-120px) scale(1.02) rotate(1deg);opacity:1}
+      100%{transform:translateY(-100px) rotate(0);opacity:1}
+    }
+    @keyframes slideBack{to{transform:translateY(20px) scale(.92);opacity:0}}
+    .card h3{margin:12px 14px 6px;font-size:18px}
+    .meta{margin:0 14px 8px;font-size:12px;color:var(--muted)}
+    .card p{margin:0 14px 14px;font-size:14px}
+    .card .actions{display:flex;gap:10px;padding:0 14px 12px}
+    .btn{appearance:none;border:1px solid #0002;background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}
+    .btn:focus{outline:2px solid var(--accent)}
+    .controls{position:absolute;left:56px;bottom:22px;display:flex;align-items:center;gap:12px}
+    .toggle{border:none;padding:10px 14px;border-radius:12px;background:var(--accent);color:#fff;cursor:pointer;box-shadow:0 6px 14px rgba(10,102,194,.35)}
+    .panel{display:flex;flex-direction:column;gap:12px}
+    .panel .cardlike{background:#fff;border:1px solid #00000014;border-radius:16px;box-shadow:var(--shadow);padding:16px}
+    .searchbar{display:flex;gap:10px}
+    .searchbar input{flex:1;padding:10px 12px;border-radius:12px;border:1px solid #0002}
+    .searchbar select{padding:10px 12px;border-radius:12px;border:1px solid #0002}
+    .index{max-height:420px;overflow:auto;padding-right:8px}
+    .index a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;text-decoration:none;color:inherit}
+    .index a:hover{background:#f6f9ff}
+    .tag{font-size:12px;color:#245;background:#e7f2ff;border:1px solid #cfe6ff;padding:2px 8px;border-radius:999px}
+    @media (max-width:880px){.app{grid-template-columns:1fr}.stage{min-height:560px}.panel{order:-1}}
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:opacity .3s ease;z-index:1000}
+    .modal.show{visibility:visible;opacity:1}
+    .modal-content{background:#fff;color:#111;padding:24px;border-radius:16px;max-width:520px;width:92%;box-shadow:0 8px 24px rgba(0,0,0,.3);position:relative}
+    .close-btn{position:absolute;right:12px;top:8px;border:none;font-size:24px;background:none;cursor:pointer;color:#333}
+    .close-btn:hover{color:#000}
+    .ing,.steps{margin:8px 0 0 0;padding:0 14px 12px}
+    .ing li,.steps li{margin:4px 0}
+    .cite{margin-top:12px;font-size:12px;color:#555}
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="Recipe box application">
+    <section class="stage" aria-label="Recipe box">
+      <div class="floor"></div>
+      <div id="recipeBox" class="box close" aria-live="polite" aria-atomic="true">
+        <div class="body" aria-hidden="true"></div>
+        <div class="side" aria-hidden="true"></div>
+        <div class="lip" aria-hidden="true"></div>
+        <div class="lid" role="img" aria-label="Box lid"></div>
+      </div>
+      <div id="cards" class="cards" aria-label="Active recipe card"></div>
+      <div class="controls">
+        <button id="toggleBox" class="toggle" aria-controls="recipeBox">Open Box</button>
+        <button id="shuffle" class="btn" title="Show a random recipe">Random</button>
+        <button id="clear" class="btn" title="Put card away">Put Away</button>
+        <button id="pause" class="btn" title="Pause/Resume card">Pause/Resume</button>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Recipe index and filters">
+      <div class="cardlike">
+        <div class="searchbar">
+          <input id="q" type="search" placeholder="Search recipes (title or tag)" aria-label="Search recipes" />
+          <select id="quickSelect" aria-label="Quick select recipe">
+            <option value="">Jump to…</option>
+          </select>
+        </div>
+      </div>
+      <div class="cardlike">
+        <strong style="display:block;margin-bottom:8px">Index</strong>
+        <nav id="index" class="index" aria-label="Recipe list"></nav>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Card template -->
+  <template id="cardTemplate">
+    <article class="card" role="article">
+      <h3></h3>
+      <p class="meta"></p>
+      <p class="body"></p>
+      <div class="actions">
+        <button class="btn view" type="button">View</button>
+        <button class="btn save" type="button">Save</button>
+      </div>
+    </article>
+  </template>
+
+  <!-- Modal -->
+  <div id="recipeModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button id="closeModal" class="btn close-btn" title="Close">×</button>
+      <h2 id="modalTitle"></h2>
+      <p class="meta"></p>
+      <ul class="ing"></ul>
+      <ol class="steps"></ol>
+      <p class="body"></p>
+      <p class="cite"></p>
+    </div>
+  </div>
+
+  <script>
+    const HOLD_MS = 700;
+    let RECIPES = [];     // now filled by fetch
+    let recipesById = {}; // quick lookup
+
+    const $  = (sel, ctx=document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+    const box = $('#recipeBox'), cards = $('#cards'), index = $('#index'), quickSelect = $('#quickSelect');
+
+    // Load recipes.json (same directory)
+    async function loadRecipes() {
+      try {
+        const res = await fetch('recipes.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        RECIPES = await res.json();
+        recipesById = Object.fromEntries(RECIPES.map(r => [r.id, r]));
+        renderIndex(RECIPES);
+      } catch (err) {
+        console.error('Failed to load recipes.json:', err);
+        // Fallback sample so UI still works
+        RECIPES = [
+          { id:"fallback-lemon-bars", title:"Sunny Lemon Bars", time:"40 min", tags:["dessert","bake"], body:"Shortbread crust, lemony custard, powdered sugar finish." }
+        ];
+        recipesById = Object.fromEntries(RECIPES.map(r => [r.id, r]));
+        renderIndex(RECIPES);
+      }
+    }
+
+    function renderIndex(list){
+      index.innerHTML = '';
+      list.forEach(r => {
+        const a = document.createElement('a');
+        a.href = `#${r.id}`;
+        a.dataset.id = r.id;
+        a.setAttribute('role','button');
+        a.innerHTML = `<span>${r.title}</span><span class="tag">${r.tags?.[0]||''}</span>`;
+        a.addEventListener('click', e => { e.preventDefault(); showRecipe(r.id); });
+        index.appendChild(a);
+      });
+      quickSelect.innerHTML = '<option value="">Jump to…</option>' + list.map(r=>`<option value="${r.id}">${r.title}</option>`).join('');
+    }
+
+    function buildCard(recipe){
+      const tpl = $('#cardTemplate');
+      const card = tpl.content.firstElementChild.cloneNode(true);
+      card.querySelector('h3').textContent = recipe.title;
+      card.querySelector('.meta').textContent = [recipe.time, (recipe.tags||[]).join(', ')].filter(Boolean).join(' • ');
+      card.querySelector('.body').textContent = recipe.body || '';
+      card.querySelector('.view').addEventListener('click',()=>openRecipeModal(recipe));
+      card.querySelector('.save').addEventListener('click',()=>saveRecipe(recipe));
+      return card;
+    }
+
+    function saveRecipe(r){
+      const saved = JSON.parse(localStorage.getItem('savedRecipes')||'[]');
+      if(!saved.find(x=>x.id===r.id)) saved.push(r);
+      localStorage.setItem('savedRecipes', JSON.stringify(saved));
+      alert('Saved to this browser.');
+    }
+
+    function showRecipe(id, { holdPrev = true, holdMs = HOLD_MS } = {}) {
+      const recipe = recipesById[id] || RECIPES[0];
+      box.classList.remove('close'); box.classList.add('open');
+      $('#toggleBox').textContent = 'Close Box';
+
+      const current = $('.card.enter, .card.exit', cards);
+      if (current) {
+        const removeAfterExit = () => current.remove();
+        if (holdPrev) {
+          current.classList.add('hold'); 
+          setTimeout(() => {
+            current.classList.remove('hold'); current.classList.remove('enter'); current.classList.add('exit');
+            current.addEventListener('animationend', removeAfterExit, { once:true });
+          }, holdMs);
+        } else {
+          current.classList.remove('enter'); current.classList.add('exit');
+          current.addEventListener('animationend', removeAfterExit, { once:true });
+        }
+      }
+      const card = buildCard(recipe);
+      card.classList.add('enter');
+      cards.appendChild(card);
+    }
+
+    // Controls
+    $('#toggleBox').addEventListener('click', () => {
+      if (box.classList.contains('open')) {
+        box.classList.remove('open'); box.classList.add('close');
+        $('#toggleBox').textContent = 'Open Box';
+        const current = $('.card.enter, .card.exit', cards);
+        if (current) {
+          current.classList.add('hold');
+          setTimeout(() => {
+            current.classList.remove('hold'); current.classList.remove('enter'); current.classList.add('exit');
+            current.addEventListener('animationend', () => current.remove(), { once:true });
+          }, HOLD_MS);
+        }
+      } else {
+        box.classList.remove('close'); box.classList.add('open');
+        $('#toggleBox').textContent = 'Close Box';
+      }
+    });
+
+    $('#shuffle').addEventListener('click', ()=>{
+      const r = RECIPES[Math.floor(Math.random()*RECIPES.length)];
+      showRecipe(r.id);
+    });
+
+    $('#clear').addEventListener('click', ()=>{
+      const current = $('.card.enter, .card.exit', cards);
+      if (current) {
+        current.classList.add('hold'); current.classList.remove('enter');
+        setTimeout(() => {
+          current.classList.remove('hold'); current.classList.remove('enter'); current.classList.add('exit');
+          current.addEventListener('animationend', () => current.remove(), { once:true });
+        }, HOLD_MS);
+      }
+    });
+
+    $('#pause').addEventListener('click', ()=>{
+      const current = $('.card.enter, .card.exit', cards);
+      if (!current) return;
+      current.classList.toggle('hold');
+    });
+
+    // Modal
+    function openRecipeModal(recipe){
+      const m = $('#recipeModal');
+      m.querySelector('#modalTitle').textContent = recipe.title || '';
+      m.querySelector('.meta').textContent = [recipe.time, (recipe.tags||[]).join(', ')].filter(Boolean).join(' • ');
+      m.querySelector('.body').textContent = recipe.body || '';
+      const ing = m.querySelector('.ing'); ing.innerHTML = (recipe.ingredients||[]).map(i=>`<li>${i}</li>`).join('');
+      const steps = m.querySelector('.steps'); steps.innerHTML = (recipe.steps||[]).map(i=>`<li>${i}</li>`).join('');
+      m.querySelector('.cite').textContent = recipe.source_citation ? `Source: ${recipe.source_citation}` : '';
+      m.classList.add('show'); m.setAttribute('aria-hidden','false');
+    }
+    $('#closeModal').addEventListener('click', closeRecipeModal);
+    $('#recipeModal').addEventListener('click', (e)=>{ if(e.target.id==='recipeModal') closeRecipeModal(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeRecipeModal(); });
+    function closeRecipeModal(){ const m = $('#recipeModal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+
+    // Search / filter
+    $('#q').addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      const filtered = RECIPES.filter(r => (r.title||'').toLowerCase().includes(q) || (r.tags||[]).some(t=>t.toLowerCase().includes(q)));
+      renderIndex(filtered);
+    });
+    quickSelect.addEventListener('change', (e)=>{ if(e.target.value) showRecipe(e.target.value); });
+
+    // Boot
+    loadRecipes();
+  </script>
+</body>
+</html>
